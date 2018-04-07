@@ -14,10 +14,23 @@ class App extends React.Component {
   }
 
   search (term) {
-    console.log(`${term} was searched`);
     // TODO
+    // setState here for repos
+    //$.ajax
+    $.ajax({
+      url:'/repos',
+      method: 'POST',
+      data: {name: term},
+      ContentType: 'application/json',
+      success: function(data) {
+        console.log(data);
+      },
+      error: function(error) {
+        console.log(err);
+      }
+    });
   }
-
+  
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
