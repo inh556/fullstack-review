@@ -28,7 +28,13 @@ let save = function(data) {
   		"folks": data[i].folks,
   		"link": data[i].html_url
   	})
-		db.collection('repos').insert(repo);
+
+    db.collection(data[i].owner.login).update(
+      { "name" : repo.name },
+      { $set: repo },
+      { upsert: true, multi: false }
+    )
+		// db.collection('repos').insert(repo);
 	}
 };
 module.exports.save = save;
