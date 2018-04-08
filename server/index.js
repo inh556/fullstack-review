@@ -13,8 +13,10 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 //test
 app.post('/repos', function (req, res) {
-	let name = req.body;
-  github.getReposByUsername('inh556', (err, data) => {
+	let userName = req.body.username;
+	console.log('request username: ')
+	console.log(userName);
+  github.getReposByUsername(userName, (err, data) => {
   	if(err) {
   		console.log(err);
   	} else {

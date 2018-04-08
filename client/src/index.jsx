@@ -3,34 +3,24 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
-
+import axios from 'axios';
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       repos: []
     }
-
   }
-
-  search (term) {
-    // TODO
-    // setState here for repos
-    //$.ajax
-    $.ajax({
-      url:'/repos',
-      method: 'POST',
-      data: {name: term},
-      ContentType: 'application/json',
-      success: function(data) {
-        console.log(data);
-      },
-      error: function(error) {
-        console.log(err);
-      }
-    });
+  search(term) {
+    console.log("from client side: " + term)
+      axios({
+        method: 'post',
+        url: '/repos',
+        data: {
+          username: term
+        }
+      });
   }
-  
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
