@@ -1,16 +1,7 @@
-// first install mongoose  /* npm install mongoose */
 const mongoose = require('mongoose');
-// even this localtion is not exist, mongo will create one
 mongoose.connect('mongodb://localhost/fetcher', {useMongoClient: true});
-
-// test if connect correctly
-
-var db = mongoose.connection;
-
-db.on('error,', console.error.bind(console, 'connection error:'));
-
-
-
+var db = mongoose.connection;	
+//db.on('error,', console.error.bind(console, 'connection error:'));
 let repoSchema = mongoose.Schema({
   name: String,
   description: String,
@@ -18,9 +9,8 @@ let repoSchema = mongoose.Schema({
   link: String  
 });
 let Repo = mongoose.model('Repo', repoSchema);
-
 let save = function(data) {
-	console.log('data received from server!, ready write into database!');
+	let repos = [];
 	for(var i = 0; i < data.length; i++) {
   	var repo = new Repo ({
   		"name": data[i].name,
@@ -28,13 +18,10 @@ let save = function(data) {
   		"folks": data[i].folks,
   		"link": data[i].html_url
   	})
-
-    db.collection(data[i].owner.login).update(
-      { "name" : repo.name },
-      { $set: repo },
-      { upsert: true, multi: false }
-    )
-		// db.collection('repos').insert(repo);
+		repos.push(repo);
 	}
+	db.insertMany(repos);
+	// connect db and insert 
+
 };
 module.exports.save = save;
